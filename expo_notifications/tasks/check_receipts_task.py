@@ -11,8 +11,8 @@ from exponent_server_sdk import (
 )
 from requests.exceptions import ConnectionError, HTTPError
 
-from expo_notifications.models import Receipt, Ticket
 from expo_notifications.conf import settings
+from expo_notifications.models import Receipt, Ticket
 
 session = requests.Session()
 session.headers.update(

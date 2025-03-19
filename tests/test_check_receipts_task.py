@@ -6,7 +6,6 @@ from exponent_server_sdk import (
     PushReceipt,
     PushServerError,
     PushTicket,
-    PushTicketError,
 )
 from requests.exceptions import ConnectionError, HTTPError
 

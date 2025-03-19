@@ -9,8 +9,24 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
 dependencies = [
+    "django (>=4.2)",
+    "celery (>=5.4)",
+    "django-admin-anchors (>=4.2.0,<5.0.0)",
+    "exponent-server-sdk (>=2.1.0,<3.0.0)"
 ]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{include = "expo_notifications"}]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-mock = "^3.14.0"
+pytest-django = "^4.10.0"
+factory-boy = "^3.3.3"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.project.project.settings"

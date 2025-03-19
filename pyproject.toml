@@ -23,10 +23,14 @@ build-backend = "poetry.core.masonry.api"
 packages = [{include = "expo_notifications"}]
 
 [tool.poetry.group.dev.dependencies]
+ruff = "^0.11.0"
 pytest = "^8.3.5"
 pytest-mock = "^3.14.0"
 pytest-django = "^4.10.0"
 factory-boy = "^3.3.3"
+
+[tool.ruff.lint]
+extend-select = ["I"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.project.project.settings"

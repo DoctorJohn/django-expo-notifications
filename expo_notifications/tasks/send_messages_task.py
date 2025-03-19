@@ -4,7 +4,6 @@ from django.utils import timezone
 from exponent_server_sdk import (
     DeviceNotRegisteredError,
     PushClient,
-    PushMessage,
     PushServerError,
     PushTicket,
     PushTicketError,
@@ -37,25 +36,7 @@ if settings.token is not None:
 def send_messages(self, message_pks: list[str]) -> None:
     messages = Message.objects.filter(pk__in=message_pks, device__is_active=True)
 
-    push_messages = [
-        PushMessage(
-            to=message.device.push_token,
-            title=message.title,
-            body=message.body,
-            data=message.data,
-            sound=None,
-            ttl=int(message.ttl.total_seconds()),
-            expiration=None,
-            priority=None,
-            badge=None,
-            category=None,
-            display_in_foreground=None,
-            channel_id=message.channel_id,
-            subtitle=None,
-            mutable_content=None,
-        )
-        for message in messages
-    ]
+    push_messages = [message.to_push_message() for message in messages]
 
     push_client = PushClient(session=session)
 

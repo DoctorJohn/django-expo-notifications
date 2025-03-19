@@ -32,11 +32,20 @@ class MessageFactory(factory.django.DjangoModelFactory):
         model = Message
 
     device = factory.SubFactory(DeviceFactory)
+    data = factory.Faker("pydict", value_types=(str,))
     title = factory.Faker("text", max_nb_chars=64)
     body = factory.Faker("text", max_nb_chars=256)
-    data = factory.Faker("pydict", value_types=(str,))
     ttl = factory.Faker("time_delta")
+    expiration = factory.Faker("date_time", tzinfo=timezone.get_current_timezone())
+    priority = factory.Faker(
+        "random_element", elements=[p for p, _ in Message.PRIORITY_CHOICES]
+    )
+    subtitle = factory.Faker("text", max_nb_chars=64)
+    sound = factory.Faker("text", max_nb_chars=64)
+    badge = factory.Faker("random_int", min=0, max=100)
     channel_id = factory.Faker("word")
+    category_id = factory.Faker("word")
+    mutable_content = factory.Faker("boolean")
     date_scheduled = factory.Faker("date_time", tzinfo=timezone.get_current_timezone())
 
 

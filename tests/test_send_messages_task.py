@@ -4,7 +4,6 @@ import pytest
 from celery.exceptions import Retry
 from exponent_server_sdk import (
     PushClient,
-    PushMessage,
     PushServerError,
     PushTicket,
 )
@@ -74,26 +73,7 @@ def test_sends_push_messages_only_for_messages_with_active_devices(
     send_messages([message1.pk, message2.pk])
 
     assert mock_publish_multiple.call_count == 1
-    assert mock_publish_multiple.call_args.args == (
-        [
-            PushMessage(
-                to=message2.device.push_token,
-                title=message2.title,
-                body=message2.body,
-                data=message2.data,
-                sound=None,
-                ttl=int(message2.ttl.total_seconds()),
-                expiration=None,
-                priority=None,
-                badge=None,
-                category=None,
-                display_in_foreground=None,
-                channel_id=message2.channel_id,
-                subtitle=None,
-                mutable_content=None,
-            )
-        ],
-    )
+    assert mock_publish_multiple.call_args.args == ([message2.to_push_message()],)
 
 
 @pytest.mark.django_db

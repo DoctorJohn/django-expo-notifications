@@ -35,14 +35,19 @@ class MessageAdmin(admin.ModelAdmin):
         "__str__",
         "title",
         "body",
-        "ttl",
-        "channel_id",
         "date_scheduled",
         "device_link",
         "ticket_link",
     ]
-    list_filter = ["date_scheduled", "channel_id"]
-    search_fields = ["title", "body"]
+    list_filter = [
+        "date_scheduled",
+        "expiration",
+        "priority",
+        "channel_id",
+        "category_id",
+        "mutable_content",
+    ]
+    search_fields = ["title", "body", "subtitle"]
 
     def get_ordering(self, request):
         return ["-id"]

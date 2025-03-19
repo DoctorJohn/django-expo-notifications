@@ -25,6 +25,7 @@ packages = [{include = "expo_notifications"}]
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.11.0"
 pytest = "^8.3.5"
+pytest-cov = "^6.0.0"
 pytest-mock = "^3.14.0"
 pytest-django = "^4.10.0"
 pytest-randomly = "^3.16.0"
@@ -36,3 +37,4 @@ extend-select = ["I"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.project.project.settings"
+addopts = "--cov=expo_notifications --cov-report term-missing --cov-report html"

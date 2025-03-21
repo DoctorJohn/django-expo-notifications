@@ -35,12 +35,12 @@ class MessageAdmin(admin.ModelAdmin):
         "__str__",
         "title",
         "body",
-        "date_scheduled",
+        "date_created",
         "device_link",
         "ticket_link",
     ]
     list_filter = [
-        "date_scheduled",
+        "date_created",
         "expiration",
         "priority",
         "channel_id",

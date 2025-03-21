@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
                 ("channel_id", models.CharField(blank=True, max_length=32)),
                 ("category_id", models.CharField(blank=True, max_length=64)),
                 ("mutable_content", models.BooleanField(default=False)),
-                ("date_scheduled", models.DateTimeField()),
+                ("date_created", models.DateTimeField()),
                 (
                     "device",
                     models.ForeignKey(

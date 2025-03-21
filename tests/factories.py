@@ -46,7 +46,7 @@ class MessageFactory(factory.django.DjangoModelFactory):
     channel_id = factory.Faker("word")
     category_id = factory.Faker("word")
     mutable_content = factory.Faker("boolean")
-    date_scheduled = factory.Faker("date_time", tzinfo=timezone.get_current_timezone())
+    date_created = factory.Faker("date_time", tzinfo=timezone.get_current_timezone())
 
 
 class TicketFactory(factory.django.DjangoModelFactory):

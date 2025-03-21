@@ -83,7 +83,7 @@ class Message(models.Model):
         default=False,
     )
 
-    date_scheduled = models.DateTimeField()
+    date_created = models.DateTimeField()
 
     def __str__(self) -> str:
         return f"Message #{self.pk}"

@@ -45,6 +45,6 @@ device = Device.objects.create(
 device.messages.send(
     title='Hello, World!',
     body='This is a test message.',
-    date_scheduled=timezone.now(),
+    date_created=timezone.now(),
 )
 ```

@@ -1,8 +1,12 @@
 from django.db import models
 from exponent_server_sdk import PushMessage
 
+from expo_notifications.managers import MessageManager
+
 
 class Message(models.Model):
+    objects = MessageManager()
+
     device = models.ForeignKey(
         to="expo_notifications.Device",
         on_delete=models.CASCADE,

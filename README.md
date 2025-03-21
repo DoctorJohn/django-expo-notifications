@@ -36,18 +36,15 @@ The following snipped shows how to send a push notification from the Django shel
 ```python
 from django.utils import timezone
 from expo_notifications.models import Device
-from expo_notifications.tasks import send_messages
 
 device = Device.objects.create(
     token='ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]',
     date_registered=timezone.now(),
 )
 
-message = device.messages.create(
+device.messages.send(
     title='Hello, World!',
     body='This is a test message.',
     date_scheduled=timezone.now(),
 )
-
-send_messages.delay([message.pk])
 ```

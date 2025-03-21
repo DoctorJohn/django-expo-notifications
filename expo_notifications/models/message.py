@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from exponent_server_sdk import PushMessage
 
 from expo_notifications.managers import MessageManager
@@ -83,7 +84,9 @@ class Message(models.Model):
         default=False,
     )
 
-    date_created = models.DateTimeField()
+    date_created = models.DateTimeField(
+        default=timezone.now,
+    )
 
     def __str__(self) -> str:
         return f"Message #{self.pk}"

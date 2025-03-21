@@ -39,12 +39,10 @@ from expo_notifications.models import Device
 
 device = Device.objects.create(
     token='ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]',
-    date_registered=timezone.now(),
 )
 
 device.messages.send(
     title='Hello, World!',
     body='This is a test message.',
-    date_created=timezone.now(),
 )
 ```

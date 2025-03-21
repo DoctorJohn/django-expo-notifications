@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 class Device(models.Model):
@@ -19,7 +20,9 @@ class Device(models.Model):
         max_length=4096,
     )
 
-    date_registered = models.DateTimeField()
+    date_registered = models.DateTimeField(
+        default=timezone.now,
+    )
 
     is_active = models.BooleanField(
         default=True,

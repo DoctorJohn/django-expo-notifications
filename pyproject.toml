@@ -31,6 +31,7 @@ pytest-django = "^4.10.0"
 pytest-randomly = "^3.16.0"
 factory-boy = "^3.3.3"
 pre-commit = "^4.2.0"
+redis = "^5.2.1"
 
 [tool.ruff.lint]
 extend-select = ["I"]

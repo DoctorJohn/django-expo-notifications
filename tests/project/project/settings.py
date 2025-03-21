@@ -1,3 +1,4 @@
+from os import environ
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,3 +80,9 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Celery settings
+CELERY_BROKER_URL = environ.get("CELERY_BROKER_URL")
+
+# Optional advanced settings
+EXPO_NOTIFICATIONS_TOKEN = environ.get("EXPO_NOTIFICATIONS_TOKEN")

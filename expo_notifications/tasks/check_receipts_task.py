@@ -34,7 +34,7 @@ if settings.token is not None:
     default_retry_delay=settings.checking_task_retry_delay.total_seconds(),
 )
 def check_receipts(self, ticket_pks: list[str]) -> None:
-    tickets = Ticket.objects.filter(pk__in=ticket_pks)
+    tickets = Ticket.objects.filter(pk__in=ticket_pks).exclude(external_id="")
 
     push_tickets = [ticket.to_push_ticket() for ticket in tickets]
 

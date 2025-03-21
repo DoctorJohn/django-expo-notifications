@@ -54,6 +54,18 @@ def test_retries_on_http_errors(mock_check_receipts_multiple, ticket1, ticket2):
 
 
 @pytest.mark.django_db
+def test_skips_tickets_without_external_id(
+    mock_check_receipts_multiple, ticket1, ticket2
+):
+    ticket1.external_id = ""
+    ticket1.save()
+
+    check_receipts([ticket1.pk, ticket2.pk])
+    assert mock_check_receipts_multiple.call_count == 1
+    assert mock_check_receipts_multiple.call_args.args == ([ticket2.to_push_ticket()],)
+
+
+@pytest.mark.django_db
 def test_calls_check_receipts_multiple_with_expected_params(
     mock_check_receipts_multiple, ticket1, ticket2
 ):

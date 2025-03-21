@@ -6,7 +6,6 @@ from exponent_server_sdk import (
     PushClient,
     PushReceipt,
     PushServerError,
-    PushTicket,
     PushTicketError,
 )
 from requests.exceptions import ConnectionError, HTTPError
@@ -37,16 +36,7 @@ if settings.token is not None:
 def check_receipts(self, ticket_pks: list[str]) -> None:
     tickets = Ticket.objects.filter(pk__in=ticket_pks)
 
-    push_tickets = [
-        PushTicket(
-            push_message=None,
-            status=None,
-            message=None,
-            details=None,
-            id=ticket.external_id,
-        )
-        for ticket in tickets
-    ]
+    push_tickets = [ticket.to_push_ticket() for ticket in tickets]
 
     push_client = PushClient(session=session)
 

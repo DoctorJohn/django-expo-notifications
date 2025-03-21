@@ -5,7 +5,6 @@ from exponent_server_sdk import (
     PushClient,
     PushReceipt,
     PushServerError,
-    PushTicket,
 )
 from requests.exceptions import ConnectionError, HTTPError
 
@@ -59,20 +58,8 @@ def test_calls_check_receipts_multiple_with_expected_params(
     mock_check_receipts_multiple, ticket1, ticket2
 ):
     push_tickets = [
-        PushTicket(
-            push_message=None,
-            status=None,
-            message=None,
-            details=None,
-            id=ticket1.external_id,
-        ),
-        PushTicket(
-            push_message=None,
-            status=None,
-            message=None,
-            details=None,
-            id=ticket2.external_id,
-        ),
+        ticket1.to_push_ticket(),
+        ticket2.to_push_ticket(),
     ]
 
     check_receipts([ticket1.pk, ticket2.pk])

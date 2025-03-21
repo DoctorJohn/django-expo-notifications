@@ -1,4 +1,5 @@
 from django.db import models
+from exponent_server_sdk import PushTicket
 
 
 class Ticket(models.Model):
@@ -23,3 +24,16 @@ class Ticket(models.Model):
 
     def __str__(self) -> str:
         return f"Ticket #{self.pk}"
+
+    def to_push_ticket(self) -> PushTicket:
+        return PushTicket(
+            push_message=self.message.to_push_message(),
+            status=(
+                PushTicket.SUCCESS_STATUS
+                if self.is_success
+                else PushTicket.ERROR_STATUS
+            ),
+            message=self.error_message or None,
+            details=None,
+            id=self.external_id,
+        )

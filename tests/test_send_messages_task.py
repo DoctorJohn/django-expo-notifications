@@ -19,7 +19,7 @@ def mock_publish_multiple(mocker):
 
 
 @pytest.fixture(autouse=True)
-def mock_check_receipts_task(mocker):
+def mock_check_receipts_apply_async(mocker):
     path = "expo_notifications.tasks.check_receipts_task.check_receipts.apply_async"
     return mocker.patch(path)
 
@@ -265,7 +265,7 @@ def test_stores_push_ticket_receival_date(mock_publish_multiple, message1, now, 
 @pytest.mark.django_db
 def test_schedules_check_receipts_tasks_for_all_success_tickets(
     mock_publish_multiple,
-    mock_check_receipts_task,
+    mock_check_receipts_apply_async,
     settings,
     message1,
     message2,
@@ -299,9 +299,9 @@ def test_schedules_check_receipts_tasks_for_all_success_tickets(
 
     send_messages([message1.pk, message2.pk, message3.pk])
 
-    assert mock_check_receipts_task.call_count == 1
-    assert mock_check_receipts_task.call_args.kwargs["countdown"] == 60
-    assert mock_check_receipts_task.call_args.kwargs["kwargs"]["ticket_pks"] == [
+    assert mock_check_receipts_apply_async.call_count == 1
+    assert mock_check_receipts_apply_async.call_args.kwargs["countdown"] == 60
+    assert mock_check_receipts_apply_async.call_args.kwargs["kwargs"]["ticket_pks"] == [
         message1.ticket.pk,
         message3.ticket.pk,
     ]

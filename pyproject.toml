@@ -32,6 +32,7 @@ pytest-randomly = "^3.16.0"
 factory-boy = "^3.3.3"
 pre-commit = "^4.2.0"
 redis = "^5.2.1"
+beautifulsoup4 = "^4.13.3"
 
 [tool.ruff.lint]
 extend-select = ["I"]

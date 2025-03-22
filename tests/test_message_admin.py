@@ -1,9 +1,10 @@
 import pytest
+from bs4 import BeautifulSoup
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.contrib.messages import get_messages
 from django.urls import reverse
 
-from tests.factories import MessageFactory
+from tests.factories import MessageFactory, TicketFactory
 
 CHANGELIST_URL = reverse("admin:expo_notifications_message_changelist")
 
@@ -17,6 +18,36 @@ def trigger_send_messages_action(client, message_pks):
 def mock_send_messages_delay_on_commit(mocker):
     path = "expo_notifications.tasks.send_messages_task.send_messages.delay_on_commit"
     return mocker.patch(path)
+
+
+@pytest.mark.django_db
+def test_changelist_renders_correctly(admin_client):
+    message1 = MessageFactory()
+    message2 = MessageFactory()
+    ticket = TicketFactory(message=message2)
+
+    response = admin_client.get(CHANGELIST_URL)
+    assert response.status_code == 200
+
+    soup = BeautifulSoup(response.content, "html.parser")
+    str_a_tags = soup.select(".field-__str__ a")
+    ticket_link_tags = soup.select(".field-ticket_link")
+
+    str_td1 = str_a_tags[0]
+    assert str_td1
+    assert str_td1.text == str(message2)
+
+    str_td2 = str_a_tags[1]
+    assert str_td2
+    assert str_td2.text == str(message1)
+
+    ticket_link_td1 = ticket_link_tags[0]
+    assert ticket_link_td1
+    assert ticket_link_td1.text == str(ticket)
+
+    ticket_link_td2 = ticket_link_tags[1]
+    assert ticket_link_td2
+    assert ticket_link_td2.text == "-"
 
 
 @pytest.mark.django_db

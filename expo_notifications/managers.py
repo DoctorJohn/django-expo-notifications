@@ -1,12 +1,13 @@
 from typing import TYPE_CHECKING
 
-from django.db import models
+from django.db import models, transaction
 
 if TYPE_CHECKING:
     from expo_notifications.models import Message  # pragma: no cover
 
 
 class MessageManager(models.Manager):
+    @transaction.atomic
     def send(self, **kwargs) -> "Message":
         from expo_notifications.tasks import send_messages
 
@@ -17,6 +18,7 @@ class MessageManager(models.Manager):
 
         return message
 
+    @transaction.atomic
     def bulk_send(self, *args, **kwargs) -> list["Message"]:
         from expo_notifications.tasks import send_messages
 

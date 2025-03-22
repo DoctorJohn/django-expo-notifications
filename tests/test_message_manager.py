@@ -40,6 +40,22 @@ def test_send_delays_message_on_commit(mock_send_messages_delay_on_commit):
 
 
 @pytest.mark.django_db
+def test_send_rolls_back_when_sending_fails(mock_send_messages_delay_on_commit):
+    device = DeviceFactory()
+    assert device.messages.count() == 0
+
+    message_data = MessageFactory.build(device=device).__dict__.copy()
+    message_data.pop("_state")
+
+    mock_send_messages_delay_on_commit.side_effect = Exception("Something went wrong")
+
+    with pytest.raises(Exception, match="Something went wrong"):
+        Message.objects.send(**message_data)
+
+    assert device.messages.count() == 0
+
+
+@pytest.mark.django_db
 def test_bulk_send_creates_messages():
     device = DeviceFactory()
     assert device.messages.count() == 0
@@ -75,3 +91,21 @@ def test_bulk_send_delays_messages_on_commit(mock_send_messages_delay_on_commit)
     assert mock_send_messages_delay_on_commit.call_args.args == (
         [message1.pk, message2.pk],
     )
+
+
+@pytest.mark.django_db
+def test_bulk_send_rolls_back_when_sending_fails(mock_send_messages_delay_on_commit):
+    device = DeviceFactory()
+    assert device.messages.count() == 0
+
+    mock_send_messages_delay_on_commit.side_effect = Exception("Something went wrong")
+
+    with pytest.raises(Exception, match="Something went wrong"):
+        Message.objects.bulk_send(
+            [
+                MessageFactory.build(device=device),
+                MessageFactory.build(device=device),
+            ]
+        )
+
+    assert device.messages.count() == 0

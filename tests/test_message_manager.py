@@ -20,7 +20,7 @@ def test_send_creates_message():
 
 
 @pytest.mark.django_db
-def test_send_delays_message_on_commit(mock_send_messages_delay_on_commit):
+def test_send_schedules_a_send_messages_task(mock_send_messages_delay_on_commit):
     device = DeviceFactory()
 
     message_data = MessageFactory.build(device=device).__dict__.copy()
@@ -68,7 +68,7 @@ def test_bulk_send_creates_messages():
 
 
 @pytest.mark.django_db
-def test_bulk_send_delays_messages_on_commit(mock_send_messages_delay_on_commit):
+def test_bulk_send_schedules_a_send_messages_task(mock_send_messages_delay_on_commit):
     device = DeviceFactory()
 
     Message.objects.bulk_send(
@@ -106,7 +106,9 @@ def test_bulk_send_rolls_back_when_sending_fails(mock_send_messages_delay_on_com
 
 
 @pytest.mark.django_db
-def test_queryset_send_delays_messages_on_commit(mock_send_messages_delay_on_commit):
+def test_queryset_send_schedules_a_send_messages_task(
+    mock_send_messages_delay_on_commit,
+):
     device = DeviceFactory()
     assert device.messages.count() == 0
 

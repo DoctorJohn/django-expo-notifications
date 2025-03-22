@@ -146,6 +146,60 @@ Device.objects.update_or_create(
 
 We recommend using [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) and, if needed, [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.
 
+### Sending push notifications
+
+The recommended way to send messages is to create and send them in bulk like this:
+
+```python
+from expo_notifications.models import Device, Message
+
+
+messages = [
+    Message(device=device, title="Hello, World!")
+    for device in Device.objects.all()
+]
+
+Message.objects.bulk_send(messages)
+```
+
+Similar to `bulk_send`, we provide a `send` method that can be used to send a single message:
+
+```python
+from expo_notifications.models import Device, Message
+
+
+device = Device.objects.first()
+
+Message.objects.send(device=device, title="Hello, World!")
+```
+
+Both `bulk_send` and `send` methods use Django's `bulk_create` and `create` under the hood and are also available on related managers:
+
+```python
+from expo_notifications.models import Device
+
+
+device = Device.objects.first()
+device.messages.send(title="Hello, World!")
+```
+
+#### Manually resending messages
+
+This feature is mainly meant for debugging purposes, since Celery will automatically retry sending messages in case of a failure.
+
+```python
+from expo_notifications.models import Message
+
+
+# Resending a single message (i.e. a model instance)
+single_message = Message.objects.first()
+single_message.send()
+
+# Resending multiple messages (i.e. a queryset)
+multiple_messages = Message.objects.all()
+multiple_messages.send()
+```
+
 ## Example Project
 
 Take a look at our Django example project under `tests/project`.

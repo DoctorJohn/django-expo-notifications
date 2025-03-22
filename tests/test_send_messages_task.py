@@ -317,6 +317,8 @@ def test_schedules_check_receipts_tasks_for_all_success_tickets(
 
 @pytest.mark.django_db
 def test_messages_can_be_sent_multiple_times(mock_publish_multiple, message1):
+    assert message1.tickets.count() == 0
+
     mock_publish_multiple.side_effect = [
         [
             PushTicket(

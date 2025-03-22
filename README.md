@@ -1,5 +1,20 @@
 # Django Expo Notifications
 
+[![PyPI][pypi-image]][pypi-url]
+![PyPI - Python Version][python-image]
+![PyPI - Django Version][django-image]
+[![Codecov][codecov-image]][codecov-url]
+[![License][license-image]][license-url]
+
+[pypi-image]: https://img.shields.io/pypi/v/django-expo-notifications
+[pypi-url]: https://pypi.org/project/django-expo-notifications/
+[python-image]: https://img.shields.io/pypi/pyversions/django-expo-notifications
+[django-image]: https://img.shields.io/pypi/djversions/django-expo-notifications
+[codecov-image]: https://codecov.io/gh/DoctorJohn/django-expo-notifications/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/DoctorJohn/django-expo-notifications
+[license-image]: https://img.shields.io/pypi/l/django-expo-notifications
+[license-url]: https://github.com/DoctorJohn/django-expo-notifications/blob/main/LICENSE
+
 ## Example Project
 
 Take a look at our Django example project under `tests/project`.

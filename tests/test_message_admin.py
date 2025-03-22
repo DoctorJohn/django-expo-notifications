@@ -48,8 +48,8 @@ def test_changelist_renders_correctly(admin_client):
 def test_send_messages_action_schedules_a_send_messages_task(
     admin_client, mock_send_messages_delay_on_commit
 ):
-    message1 = MessageFactory.create()
-    message2 = MessageFactory.create()
+    message1 = MessageFactory()
+    message2 = MessageFactory()
 
     response = trigger_send_messages_action(admin_client, [message1.pk, message2.pk])
     assert response.status_code == 302

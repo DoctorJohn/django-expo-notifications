@@ -26,17 +26,17 @@ def mock_check_receipts_apply_async(mocker):
 
 @pytest.fixture
 def message1():
-    return MessageFactory.create(device__is_active=True)
+    return MessageFactory(device__is_active=True)
 
 
 @pytest.fixture
 def message2():
-    return MessageFactory.create(device__is_active=True)
+    return MessageFactory(device__is_active=True)
 
 
 @pytest.fixture
 def message3():
-    return MessageFactory.create(device__is_active=True)
+    return MessageFactory(device__is_active=True)
 
 
 @pytest.mark.django_db

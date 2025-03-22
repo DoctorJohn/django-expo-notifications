@@ -18,12 +18,12 @@ def mock_check_receipts_multiple(mocker):
 
 @pytest.fixture
 def ticket1():
-    return TicketFactory.create(external_id="test-id-1")
+    return TicketFactory(external_id="test-id-1")
 
 
 @pytest.fixture
 def ticket2():
-    return TicketFactory.create(external_id="test-id-2")
+    return TicketFactory(external_id="test-id-2")
 
 
 @pytest.mark.django_db

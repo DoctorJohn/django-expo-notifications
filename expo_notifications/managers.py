@@ -6,7 +6,18 @@ if TYPE_CHECKING:
     from expo_notifications.models import Message  # pragma: no cover
 
 
+class MessageQueryset(models.QuerySet):
+    def send(self) -> None:
+        from expo_notifications.tasks import send_messages
+
+        message_pks = list(self.values_list("pk", flat=True))
+        send_messages.delay_on_commit(message_pks)
+
+
 class MessageManager(models.Manager):
+    def get_queryset(self) -> MessageQueryset:
+        return MessageQueryset(self.model, using=self._db)
+
     @transaction.atomic
     def send(self, **kwargs) -> "Message":
         from expo_notifications.tasks import send_messages

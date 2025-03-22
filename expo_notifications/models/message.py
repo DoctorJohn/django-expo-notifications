@@ -108,3 +108,8 @@ class Message(models.Model):
             subtitle=self.subtitle or None,
             mutable_content=self.mutable_content,
         )
+
+    def send(self) -> None:
+        from expo_notifications.tasks import send_messages
+
+        send_messages.delay_on_commit([self.pk])

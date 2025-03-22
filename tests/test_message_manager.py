@@ -109,3 +109,19 @@ def test_bulk_send_rolls_back_when_sending_fails(mock_send_messages_delay_on_com
         )
 
     assert device.messages.count() == 0
+
+
+@pytest.mark.django_db
+def test_queryset_send_delays_messages_on_commit(mock_send_messages_delay_on_commit):
+    device = DeviceFactory()
+    assert device.messages.count() == 0
+
+    message1 = MessageFactory(device=device)
+    message2 = MessageFactory(device=device)
+
+    Message.objects.all().send()
+
+    assert mock_send_messages_delay_on_commit.call_count == 1
+    assert mock_send_messages_delay_on_commit.call_args.args == (
+        [message1.pk, message2.pk],
+    )

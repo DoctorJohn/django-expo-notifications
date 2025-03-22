@@ -66,10 +66,7 @@ class MessageAdmin(admin.ModelAdmin):
 
     @admin.action(description="Send selected messages")
     def send_messages(modeladmin, request, queryset):
-        from expo_notifications.tasks import send_messages
-
-        message_pks = list(queryset.values_list("pk", flat=True))
-        send_messages.delay_on_commit(message_pks)
+        queryset.send()
 
         modeladmin.message_user(
             request,

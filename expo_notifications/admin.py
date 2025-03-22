@@ -103,6 +103,7 @@ class TicketAdmin(admin.ModelAdmin):
     ]
     list_filter = ["is_success", "date_received"]
     search_fields = ["external_id"]
+    actions = ["check_tickets"]
 
     def get_ordering(self, request):
         return ["-id"]
@@ -116,6 +117,20 @@ class TicketAdmin(admin.ModelAdmin):
     @admin_anchor("receipts")
     def receipts_link(self, instance):
         return str(instance.receipts.count())
+
+    @admin.action(description="Check selected tickets")
+    def check_tickets(modeladmin, request, queryset):
+        queryset.check_receipts()
+
+        modeladmin.message_user(
+            request,
+            ngettext(
+                "%d ticket receipt will be checked.",
+                "%d ticket receipts will be checked.",
+                queryset.count(),
+            )
+            % queryset.count(),
+        )
 
 
 admin.site.register(Device, DeviceAdmin)

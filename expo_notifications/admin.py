@@ -95,7 +95,7 @@ class TicketAdmin(admin.ModelAdmin):
         "date_received",
         "external_id",
         "message_link",
-        "receipt_link",
+        "receipts_link",
     ]
     list_filter = ["is_success", "date_received"]
     search_fields = ["external_id"]
@@ -108,10 +108,10 @@ class TicketAdmin(admin.ModelAdmin):
     def message_link(self, instance):
         return str(instance.message)
 
-    @admin.display(description="Receipt")
-    @admin_anchor("receipt")
-    def receipt_link(self, instance):
-        return str(instance.receipt)
+    @admin.display(description="Receipts")
+    @admin_anchor("receipts")
+    def receipts_link(self, instance):
+        return str(instance.receipts.count())
 
 
 admin.site.register(Device, DeviceAdmin)

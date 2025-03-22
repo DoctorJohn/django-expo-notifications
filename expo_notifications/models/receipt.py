@@ -2,10 +2,10 @@ from django.db import models
 
 
 class Receipt(models.Model):
-    ticket = models.OneToOneField(
+    ticket = models.ForeignKey(
         to="expo_notifications.Ticket",
         on_delete=models.CASCADE,
-        related_name="receipt",
+        related_name="receipts",
     )
 
     is_success = models.BooleanField()

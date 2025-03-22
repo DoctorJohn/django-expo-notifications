@@ -1,6 +1,5 @@
 import pytest
 from celery.exceptions import Retry
-from django.core.exceptions import ObjectDoesNotExist
 from exponent_server_sdk import (
     PushClient,
     PushReceipt,
@@ -81,6 +80,13 @@ def test_calls_check_receipts_multiple_with_expected_params(
 
 @pytest.mark.django_db
 def test_deactivates_unknown_devices(mock_check_receipts_multiple, ticket1):
+    assert ticket1.receipts.count() == 0
+
+    device = ticket1.message.device
+    device.is_active = True
+    device.save()
+    assert device.is_active
+
     mock_check_receipts_multiple.return_value = [
         PushReceipt(
             id=ticket1.external_id,
@@ -90,21 +96,11 @@ def test_deactivates_unknown_devices(mock_check_receipts_multiple, ticket1):
         )
     ]
 
-    device = ticket1.message.device
-    device.is_active = True
-    device.save()
-    assert device.is_active
-
-    with pytest.raises(ObjectDoesNotExist):
-        ticket1.receipt
-
     check_receipts([ticket1.pk])
+    assert ticket1.receipts.count() == 1
 
     device.refresh_from_db()
     assert not device.is_active
-
-    ticket1.refresh_from_db()
-    assert ticket1.receipt
 
 
 @pytest.mark.parametrize(
@@ -120,6 +116,9 @@ def test_deactivates_unknown_devices(mock_check_receipts_multiple, ticket1):
 def test_stores_receipts_for_all_tickets(
     mock_check_receipts_multiple, ticket1, ticket2, details
 ):
+    assert ticket1.receipts.count() == 0
+    assert ticket2.receipts.count() == 0
+
     mock_check_receipts_multiple.return_value = [
         PushReceipt(
             id=ticket1.external_id,
@@ -135,21 +134,13 @@ def test_stores_receipts_for_all_tickets(
         ),
     ]
 
-    with pytest.raises(ObjectDoesNotExist):
-        ticket1.receipt
-
-    with pytest.raises(ObjectDoesNotExist):
-        ticket2.receipt
-
     check_receipts([ticket1.pk, ticket2.pk])
 
-    ticket1.refresh_from_db()
-    assert ticket1.receipt
-    assert not ticket1.receipt.is_success
+    receipt1 = ticket1.receipts.get()
+    assert not receipt1.is_success
 
-    ticket2.refresh_from_db()
-    assert ticket2.receipt
-    assert ticket2.receipt.is_success
+    receipt2 = ticket2.receipts.get()
+    assert receipt2.is_success
 
 
 @pytest.mark.parametrize(
@@ -173,8 +164,9 @@ def test_stores_push_receipt_status(
     ]
 
     check_receipts([ticket1.pk])
-    assert ticket1.receipt
-    assert ticket1.receipt.is_success == is_success
+
+    receipt1 = ticket1.receipts.get()
+    assert receipt1.is_success == is_success
 
 
 @pytest.mark.parametrize(
@@ -206,12 +198,14 @@ def test_stores_push_ticket_error_message(
     ]
 
     check_receipts([ticket1.pk, ticket2.pk])
-    assert ticket1.receipt
-    assert not ticket1.receipt.is_success
-    assert ticket1.receipt.error_message == "test-error-message"
-    assert ticket2.receipt
-    assert ticket2.receipt.is_success
-    assert ticket2.receipt.error_message == ""
+
+    receipt1 = ticket1.receipts.get()
+    assert not receipt1.is_success
+    assert receipt1.error_message == "test-error-message"
+
+    receipt2 = ticket2.receipts.get()
+    assert receipt2.is_success
+    assert receipt2.error_message == ""
 
 
 @pytest.mark.parametrize(
@@ -236,15 +230,17 @@ def test_stores_push_receipt_check_date(
 
     check_receipts([ticket1.pk])
 
-    ticket1.refresh_from_db()
-    assert ticket1.receipt
-    assert ticket1.receipt.date_checked == now
+    receipt1 = ticket1.receipts.get()
+    assert receipt1.date_checked == now
 
 
 @pytest.mark.django_db
 def test_can_handle_external_ids_omitted_from_response_due_to_being_unknown_to_expo(
     mock_check_receipts_multiple, ticket1, ticket2
 ):
+    assert ticket1.receipts.count() == 0
+    assert ticket2.receipts.count() == 0
+
     mock_check_receipts_multiple.return_value = [
         PushReceipt(
             id=ticket2.external_id,
@@ -254,16 +250,44 @@ def test_can_handle_external_ids_omitted_from_response_due_to_being_unknown_to_e
         ),
     ]
 
-    with pytest.raises(ObjectDoesNotExist):
-        ticket1.receipt
-
-    with pytest.raises(ObjectDoesNotExist):
-        ticket2.receipt
-
     check_receipts([ticket1.pk, ticket2.pk])
-    with pytest.raises(ObjectDoesNotExist):
-        ticket1.receipt
+    assert ticket1.receipts.count() == 0
 
-    ticket2.refresh_from_db()
-    assert ticket2.receipt
-    assert ticket2.receipt.is_success
+    receipt2 = ticket2.receipts.get()
+    assert receipt2.is_success
+
+
+@pytest.mark.django_db
+def test_tickets_can_be_checked_multiple_times(mock_check_receipts_multiple, ticket1):
+    assert ticket1.receipts.count() == 0
+
+    mock_check_receipts_multiple.side_effect = [
+        [
+            PushReceipt(
+                id=ticket1.external_id,
+                status=PushReceipt.SUCCESS_STATUS,
+                message="",
+                details=None,
+            ),
+        ],
+        [
+            PushReceipt(
+                id=ticket1.external_id,
+                status=PushReceipt.SUCCESS_STATUS,
+                message="",
+                details=None,
+            ),
+        ],
+    ]
+
+    check_receipts([ticket1.pk])
+    assert ticket1.receipts.count() == 1
+
+    check_receipts([ticket1.pk])
+    assert ticket1.receipts.count() == 2
+
+    receipt1 = ticket1.receipts.all()[0]
+    assert receipt1.is_success
+
+    receipt2 = ticket1.receipts.all()[1]
+    assert receipt2.is_success

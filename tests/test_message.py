@@ -6,6 +6,12 @@ from expo_notifications.models import Message
 from tests.factories import MessageFactory
 
 
+@pytest.fixture(autouse=True)
+def mock_send_messages_delay_on_commit(mocker):
+    path = "expo_notifications.tasks.send_messages_task.send_messages.delay_on_commit"
+    return mocker.patch(path)
+
+
 @pytest.mark.django_db
 def test_str():
     message = MessageFactory()
@@ -189,3 +195,11 @@ def test_to_push_message_passes_mutable_content_through(mutable_content):
     message = MessageFactory(mutable_content=mutable_content)
     push_message = message.to_push_message()
     assert push_message.mutable_content == mutable_content
+
+
+@pytest.mark.django_db
+def test_send_schedules_a_send_messages_task(mock_send_messages_delay_on_commit):
+    message = MessageFactory()
+    message.send()
+    assert mock_send_messages_delay_on_commit.call_count == 1
+    assert mock_send_messages_delay_on_commit.call_args.args == ([message.pk],)

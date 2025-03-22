@@ -39,7 +39,11 @@ INSTALLED_APPS = [
 ```
 
 The `expo_notifications` app comes with a set of models.
-To make them available in your database, run Django's `migrate` management command.
+To make them available in your database, run Django's `migrate` management command:
+
+```sh
+python manage.py migrate
+```
 
 ## Settings
 

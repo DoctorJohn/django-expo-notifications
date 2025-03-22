@@ -47,7 +47,7 @@ python manage.py migrate
 
 ## Settings
 
-You may optionally set the following options in your Django project's settings module.
+You may optionally set the following settings in your Django project's settings module.
 The code snippet bellow shows the default values for each setting.
 
 ```python

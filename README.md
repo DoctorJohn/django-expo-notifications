@@ -80,6 +80,72 @@ Expo recommends to check the receipts of push notifications after some delay.
 This gives Expo time to process the push notifications and generate receipts.
 By default, the delay is set to 30 minutes, based on the value used in the official [Expo Server SDK for Node](https://github.com/expo/expo-server-sdk-node).
 
+## Usage
+
+The most basic usage of this app involves creating `Device` and `Message` model instances.
+
+### Quickstart
+
+```python
+from django.contrib.auth import get_user_model
+from expo_notifications.models import Device, Message
+
+
+some_user = get_user_model().objects.first()
+
+device = Device.objects.create(
+    user=some_user,
+    push_token="ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+)
+
+device.messages.send(
+    title="Hello, World!",
+    body="This is a test message.",
+)
+```
+
+### Keeping track of user devices
+
+The `Device` model represents a user device that can receive push notifications as long as it's `is_active` flag is `True`.
+A user may have multiple devices, however, each device must have an Expo token that is unique to that device and user.
+
+```python
+from django.contrib.auth import get_user_model
+from expo_notifications.models import Device
+
+
+some_user = get_user_model().objects.first()
+
+Device.objects.update_or_create(
+    user=some_user,
+    push_token="ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+    defaults={"is_active": True},
+)
+```
+
+We recommend using `update_or_create` to avoid duplicate devices and to automatically reactivate existing devices if necessary.
+
+#### Keeping track of device language
+
+The `Device` model has an optional `lang` field that can be used to store the language/region code of the device.g. as per ISO 639-1).
+This can be useful if you want to send localized push notifications to your users.
+
+```python
+from django.contrib.auth import get_user_model
+from expo_notifications.models import Device
+
+
+some_user = get_user_model().objects.first()
+
+Device.objects.update_or_create(
+    user=some_user,
+    push_token="ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",
+    defaults={"is_active": True, "lang": "en"},
+)
+```
+
+We recommend using [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) and, if needed, [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.
+
 ## Example Project
 
 Take a look at our Django example project under `tests/project`.

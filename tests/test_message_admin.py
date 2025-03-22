@@ -24,14 +24,14 @@ def mock_send_messages_delay_on_commit(mocker):
 def test_changelist_renders_correctly(admin_client):
     message1 = MessageFactory()
     message2 = MessageFactory()
-    ticket = TicketFactory(message=message2)
+    TicketFactory.create_batch(3, message=message2)
 
     response = admin_client.get(CHANGELIST_URL)
     assert response.status_code == 200
 
     soup = BeautifulSoup(response.content, "html.parser")
     str_a_tags = soup.select(".field-__str__ a")
-    ticket_link_tags = soup.select(".field-ticket_link")
+    tickets_link_tags = soup.select(".field-tickets_link")
 
     str_td1 = str_a_tags[0]
     assert str_td1
@@ -41,13 +41,13 @@ def test_changelist_renders_correctly(admin_client):
     assert str_td2
     assert str_td2.text == str(message1)
 
-    ticket_link_td1 = ticket_link_tags[0]
+    ticket_link_td1 = tickets_link_tags[0]
     assert ticket_link_td1
-    assert ticket_link_td1.text == str(ticket)
+    assert ticket_link_td1.text == "3"
 
-    ticket_link_td2 = ticket_link_tags[1]
+    ticket_link_td2 = tickets_link_tags[1]
     assert ticket_link_td2
-    assert ticket_link_td2.text == "-"
+    assert ticket_link_td2.text == "0"
 
 
 @pytest.mark.django_db

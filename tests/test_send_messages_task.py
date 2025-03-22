@@ -146,17 +146,14 @@ def test_stores_push_tickets_for_all_messages(
 
     send_messages([message1.pk, message2.pk, message3.pk])
 
-    message1.refresh_from_db()
-    assert message1.ticket
-    assert message1.ticket.external_id == "test-ticket1-id"
+    ticket1 = message1.tickets.get()
+    assert ticket1.external_id == "test-ticket1-id"
 
-    message2.refresh_from_db()
-    assert message2.ticket
-    assert message2.ticket.external_id == "test-ticket2-id"
+    ticket2 = message2.tickets.get()
+    assert ticket2.external_id == "test-ticket2-id"
 
-    message3.refresh_from_db()
-    assert message3.ticket
-    assert message3.ticket.external_id == "test-ticket3-id"
+    ticket3 = message3.tickets.get()
+    assert ticket3.external_id == "test-ticket3-id"
 
 
 @pytest.mark.parametrize(
@@ -179,9 +176,11 @@ def test_stores_push_ticket_status(mock_publish_multiple, message1, status, is_s
     ]
 
     send_messages([message1.pk])
-    assert message1.ticket
-    assert message1.ticket.external_id == "test-push-ticket-id"
-    assert message1.ticket.is_success == is_success
+    assert message1.tickets.count() == 1
+
+    ticket1 = message1.tickets.get()
+    assert ticket1.external_id == "test-push-ticket-id"
+    assert ticket1.is_success == is_success
 
 
 @pytest.mark.django_db
@@ -204,10 +203,14 @@ def test_stores_push_ticket_external_id(mock_publish_multiple, message1, message
     ]
 
     send_messages([message1.pk, message2.pk])
-    assert message1.ticket.is_success
-    assert message1.ticket.external_id == "test-ticket1-id"
-    assert not message2.ticket.is_success
-    assert message2.ticket.external_id == ""
+
+    ticket1 = message1.tickets.get()
+    assert ticket1.is_success
+    assert ticket1.external_id == "test-ticket1-id"
+
+    ticket2 = message2.tickets.get()
+    assert not ticket2.is_success
+    assert ticket2.external_id == ""
 
 
 @pytest.mark.django_db
@@ -230,12 +233,14 @@ def test_stores_push_ticket_error_message(mock_publish_multiple, message1, messa
     ]
 
     send_messages([message1.pk, message2.pk])
-    assert message1.ticket
-    assert message1.ticket.is_success
-    assert message1.ticket.error_message == "test-error-message"
-    assert message2.ticket
-    assert not message2.ticket.is_success
-    assert message2.ticket.error_message == ""
+
+    ticket1 = message1.tickets.get()
+    assert ticket1.is_success
+    assert ticket1.error_message == "test-error-message"
+
+    ticket2 = message2.tickets.get()
+    assert not ticket2.is_success
+    assert ticket2.error_message == ""
 
 
 @pytest.mark.parametrize(
@@ -258,8 +263,9 @@ def test_stores_push_ticket_receival_date(mock_publish_multiple, message1, now, 
     ]
 
     send_messages([message1.pk])
-    assert message1.ticket
-    assert message1.ticket.date_received == now
+
+    ticket1 = message1.tickets.get()
+    assert ticket1.date_received == now
 
 
 @pytest.mark.django_db
@@ -299,9 +305,47 @@ def test_schedules_check_receipts_tasks_for_all_success_tickets(
 
     send_messages([message1.pk, message2.pk, message3.pk])
 
+    ticket1 = message1.tickets.get()
+    ticket3 = message3.tickets.get()
     assert mock_check_receipts_apply_async.call_count == 1
     assert mock_check_receipts_apply_async.call_args.kwargs["countdown"] == 60
     assert mock_check_receipts_apply_async.call_args.kwargs["kwargs"]["ticket_pks"] == [
-        message1.ticket.pk,
-        message3.ticket.pk,
+        ticket1.pk,
+        ticket3.pk,
     ]
+
+
+@pytest.mark.django_db
+def test_messages_can_be_sent_multiple_times(mock_publish_multiple, message1):
+    mock_publish_multiple.side_effect = [
+        [
+            PushTicket(
+                push_message="test-push-message",
+                status=PushTicket.SUCCESS_STATUS,
+                message="",
+                details=None,
+                id="test-ticket1-id",
+            ),
+        ],
+        [
+            PushTicket(
+                push_message="test-push-message",
+                status=PushTicket.SUCCESS_STATUS,
+                message="",
+                details=None,
+                id="test-ticket2-id",
+            ),
+        ],
+    ]
+
+    send_messages([message1.pk])
+    assert message1.tickets.count() == 1
+
+    send_messages([message1.pk])
+    assert message1.tickets.count() == 2
+
+    ticket1 = message1.tickets.all()[0]
+    assert ticket1.external_id == "test-ticket1-id"
+
+    ticket2 = message1.tickets.all()[1]
+    assert ticket2.external_id == "test-ticket2-id"

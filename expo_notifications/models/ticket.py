@@ -3,10 +3,10 @@ from exponent_server_sdk import PushTicket
 
 
 class Ticket(models.Model):
-    message = models.OneToOneField(
+    message = models.ForeignKey(
         to="expo_notifications.Message",
         on_delete=models.CASCADE,
-        related_name="ticket",
+        related_name="tickets",
     )
 
     is_success = models.BooleanField()

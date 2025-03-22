@@ -38,7 +38,7 @@ class MessageAdmin(admin.ModelAdmin):
         "body",
         "date_created",
         "device_link",
-        "ticket_link",
+        "tickets_link",
     ]
     list_filter = [
         "date_created",
@@ -59,10 +59,10 @@ class MessageAdmin(admin.ModelAdmin):
     def device_link(self, instance):
         return str(instance.device)
 
-    @admin.display(description="Ticket")
-    @admin_anchor("ticket")
-    def ticket_link(self, instance):
-        return str(instance.ticket)
+    @admin.display(description="Tickets")
+    @admin_anchor("tickets")
+    def tickets_link(self, instance):
+        return str(instance.tickets.count())
 
     @admin.action(description="Send selected messages")
     def send_messages(modeladmin, request, queryset):

@@ -93,7 +93,8 @@ However, note that Expo only keeps ticket receipts for around a day and Celery g
 
 ## Usage
 
-The most basic usage of this app involves creating `Device` and `Message` model instances.
+The most basic usage of this app involves managing user devices and sending messages to them.
+Everything else (i.e. background task scheduling, retries, checking ticket receipts, deactivating devices, etc.) is handled automatically.
 
 ### Quickstart
 

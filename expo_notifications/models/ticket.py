@@ -1,8 +1,12 @@
 from django.db import models
 from exponent_server_sdk import PushTicket
 
+from expo_notifications.managers import TicketManager
+
 
 class Ticket(models.Model):
+    objects = TicketManager()
+
     message = models.ForeignKey(
         to="expo_notifications.Message",
         on_delete=models.CASCADE,

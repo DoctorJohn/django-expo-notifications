@@ -1,7 +1,7 @@
 [project]
 name = "django-expo-notifications"
 version = "0.0.0"
-description = "Efficiently send and keep track of Expo push notifications with Django and Celery"
+description = "Send and keep track of Expo push notifications with Django and Celery"
 authors = [
     {name = "Jonathan Ehwald",email = "github@ehwald.info"}
 ]

@@ -2,7 +2,7 @@ from django.db import models
 
 
 class TicketQueryset(models.QuerySet):
-    def check(self) -> None:
+    def check_receipts(self) -> None:
         from expo_notifications.tasks import check_receipts
 
         ticket_pks = list(self.values_list("pk", flat=True))

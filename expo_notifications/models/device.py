@@ -13,6 +13,7 @@ class Device(models.Model):
     lang = models.CharField(
         # e.g. for ISO 639-1 set 1 & ISO 3166-1 alpha-2
         max_length=5,
+        blank=True,
     )
 
     push_token = models.CharField(

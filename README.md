@@ -83,6 +83,13 @@ Check out the [Expo documentation](https://docs.expo.dev/push-notifications/send
 Expo recommends to check the receipts of push notifications after some delay.
 This gives Expo time to process the push notifications and generate receipts.
 By default, the delay is set to 30 minutes, based on the value used in the official [Expo Server SDK for Node](https://github.com/expo/expo-server-sdk-node).
+If needed, you can adjust the delay setting like this:
+
+```python
+EXPO_NOTIFICATIONS_RECEIPT_CHECK_DELAY = timedelta(hours=1)
+```
+
+However, note that Expo only keeps ticket receipts for around a day and Celery generally prefers if tasks are not scheduled too far in the future.
 
 ## Usage
 

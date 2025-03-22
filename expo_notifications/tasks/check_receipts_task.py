@@ -1,4 +1,3 @@
-import requests
 from celery import shared_task
 from django.utils import timezone
 from exponent_server_sdk import (
@@ -12,19 +11,7 @@ from requests.exceptions import ConnectionError, HTTPError
 
 from expo_notifications.conf import settings
 from expo_notifications.models import Receipt, Ticket
-
-session = requests.Session()
-session.headers.update(
-    {
-        "accept": "application/json",
-        "accept-encoding": "gzip, deflate",
-        "content-type": "application/json",
-    }
-)
-
-
-if settings.token is not None:
-    session.headers.update({"Authorization": f"Bearer {settings.token}"})
+from expo_notifications.tasks.session import session
 
 
 @shared_task(

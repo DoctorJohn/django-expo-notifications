@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from django.db import models
 
 if TYPE_CHECKING:
-    from expo_notifications.models import Message
+    from expo_notifications.models import Message  # pragma: no cover
 
 
 class MessageManager(models.Manager):

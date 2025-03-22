@@ -54,3 +54,13 @@ def test_to_push_ticket_sets_external_id_as_id():
     ticket = TicketFactory(external_id="test-external-id")
     push_ticket = ticket.to_push_ticket()
     assert push_ticket.id == "test-external-id"
+
+
+@pytest.mark.django_db
+def test_check_receipt_schedules_a_check_receipts_task(
+    mock_check_receipts_delay_on_commit,
+):
+    ticket = TicketFactory()
+    ticket.check_receipt()
+    assert mock_check_receipts_delay_on_commit.call_count == 1
+    assert mock_check_receipts_delay_on_commit.call_args.args == ([ticket.pk],)

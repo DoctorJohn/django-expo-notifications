@@ -41,3 +41,8 @@ class Ticket(models.Model):
             details=None,
             id=self.external_id,
         )
+
+    def check_receipt(self) -> None:
+        from expo_notifications.tasks import check_receipts
+
+        check_receipts.delay_on_commit([self.pk])

@@ -70,7 +70,7 @@ def test_send_messages_action_schedules_a_send_messages_task(
     ],
 )
 @pytest.mark.django_db
-def test_send_messages_action_reports_how_many_messages_were_sent(
+def test_send_messages_action_reports_how_many_messages_will_be_send(
     admin_client, message_count, admin_message
 ):
     messages = MessageFactory.create_batch(message_count)

@@ -15,6 +15,11 @@ dependencies = [
     "exponent-server-sdk (>=2.1.0,<3.0.0)"
 ]
 
+[project.urls]
+homepage = "https://github.com/DoctorJohn/django-expo-notifications"
+repository = "https://github.com/DoctorJohn/django-expo-notifications"
+documentation = "https://github.com/DoctorJohn/django-expo-notifications"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

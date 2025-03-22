@@ -64,9 +64,9 @@ def test_send_messages_action_schedules_a_send_messages_task(
 @pytest.mark.parametrize(
     ("message_count", "admin_message"),
     [
-        (1, "1 message was sent."),
-        (2, "2 messages were sent."),
-        (30, "30 messages were sent."),
+        (1, "1 message will be send."),
+        (2, "2 messages will be send."),
+        (30, "30 messages will be send."),
     ],
 )
 @pytest.mark.django_db

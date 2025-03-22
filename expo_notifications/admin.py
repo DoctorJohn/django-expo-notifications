@@ -70,7 +70,11 @@ class MessageAdmin(admin.ModelAdmin):
 
         modeladmin.message_user(
             request,
-            ngettext("%d message was sent.", "%d messages were sent.", queryset.count())
+            ngettext(
+                "%d message will be send.",
+                "%d messages will be send.",
+                queryset.count(),
+            )
             % queryset.count(),
         )
 

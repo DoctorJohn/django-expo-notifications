@@ -12,7 +12,8 @@ It can be run by executing these commands:
 
 ### Live testing
 
-Test sending push notifications and checking their receipts involves running a Celery worker and making sure the Celery worker is authorized to communicate with Expo.
+Sending push notifications and checking their receipts can be done by using the "Send selected messages" action in the Django admin interface.
+In order for this to work, you need to run a Celery worker and make sure the Celery worker is authorized to communicate with Expo.
 
 Unless the default Celery broker setup works for you (i.e. RabbitMQ on localhost), you need to provide a Celery broker url:
 
@@ -26,23 +27,7 @@ In case you enabled `Enhanced Security for Push Notifications` in your Expo acco
 export EXPO_NOTIFICATIONS_TOKEN="your-expo-viewer-access-token-here"
 ```
 
-Now you can run a Celery worker and a Django shell in parallel to test sending push notifications and checking their receipts:
+Now you can run a Celery worker and the Django dev server in parallel to test sending push notifications and checking their receipts:
 
 - `poetry run celery --workdir tests/project --app project worker -l INFO`
-- `poetry run tests/project/manage.py shell`
-
-The following snipped shows how to send a push notification from the Django shell, which will be send and later checked by the Celery worker:
-
-```python
-from django.utils import timezone
-from expo_notifications.models import Device
-
-device = Device.objects.create(
-    token='ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]',
-)
-
-device.messages.send(
-    title='Hello, World!',
-    body='This is a test message.',
-)
-```
+- `poetry run tests/project/manage.py runserver`

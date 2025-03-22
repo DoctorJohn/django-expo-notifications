@@ -1,5 +1,6 @@
 from admin_anchors import admin_anchor
 from django.contrib import admin
+from django.utils.translation import ngettext
 
 from expo_notifications.models import Device, Message, Receipt, Ticket
 
@@ -48,6 +49,7 @@ class MessageAdmin(admin.ModelAdmin):
         "mutable_content",
     ]
     search_fields = ["title", "body", "subtitle"]
+    actions = ["send_messages"]
 
     def get_ordering(self, request):
         return ["-id"]
@@ -61,6 +63,19 @@ class MessageAdmin(admin.ModelAdmin):
     @admin_anchor("ticket")
     def ticket_link(self, instance):
         return str(instance.ticket)
+
+    @admin.action(description="Send selected messages")
+    def send_messages(modeladmin, request, queryset):
+        from expo_notifications.tasks import send_messages
+
+        message_pks = list(queryset.values_list("pk", flat=True))
+        send_messages.delay_on_commit(message_pks)
+
+        modeladmin.message_user(
+            request,
+            ngettext("%d message was sent.", "%d messages were sent.", queryset.count())
+            % queryset.count(),
+        )
 
 
 class ReceiptAdmin(admin.ModelAdmin):

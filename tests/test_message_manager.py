@@ -109,11 +109,10 @@ def test_bulk_send_rolls_back_when_sending_fails(mock_send_messages_delay_on_com
 def test_queryset_send_schedules_a_send_messages_task(
     mock_send_messages_delay_on_commit,
 ):
-    device = DeviceFactory()
-    assert device.messages.count() == 0
+    assert Message.objects.count() == 0
 
-    message1 = MessageFactory(device=device)
-    message2 = MessageFactory(device=device)
+    message1 = MessageFactory()
+    message2 = MessageFactory()
 
     Message.objects.all().send()
 

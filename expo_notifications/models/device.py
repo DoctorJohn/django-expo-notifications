@@ -2,8 +2,12 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from expo_notifications.managers import DeviceManager
+
 
 class Device(models.Model):
+    objects = DeviceManager()
+
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,

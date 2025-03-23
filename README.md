@@ -185,7 +185,7 @@ from expo_notifications.models import Device, Message
 
 messages = [
     Message(device=device, title="Hello, World!")
-    for device in Device.objects.filter(is_active=True)
+    for device in Device.objects.active
 ]
 
 Message.objects.bulk_send(messages)
@@ -197,7 +197,7 @@ Similar to `bulk_send`, we provide a `send` method that can be used to send a si
 from expo_notifications.models import Device, Message
 
 
-device = Device.objects.filter(is_active=True).first()
+device = Device.objects.active.first()
 
 Message.objects.send(device=device, title="Hello, World!")
 ```
@@ -208,7 +208,7 @@ Both `bulk_send` and `send` methods use Django's `bulk_create` and `create` unde
 from expo_notifications.models import Device
 
 
-device = Device.objects.filter(is_active=True).first()
+device = Device.objects.active.first()
 device.messages.send(title="Hello, World!")
 ```
 

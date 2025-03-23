@@ -16,7 +16,7 @@
 [license-url]: https://github.com/DoctorJohn/django-expo-notifications/blob/main/LICENSE
 
 A Django app that allows you to keep track of devices, send Expo push notifications, and check their tickets for receipts.
-This project makes use of the [Expo Server SDK for Python](https://github.com/expo-community/expo-server-sdk-python) for sending push messages and checking push receipts.
+This project makes use of [Celery](https://github.com/celery/celery) and the [Expo Server SDK for Python](https://github.com/expo-community/expo-server-sdk-python) for sending push messages and checking push receipts in the background.
 
 ## Installation
 
@@ -44,6 +44,9 @@ To make them available in your database, run Django's `migrate` management comma
 ```sh
 python manage.py migrate
 ```
+
+Finally, make sure your Django project is configured to use Celery.
+This can be done by following Celery's [First steps with Django](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html) guide.
 
 ## Settings
 

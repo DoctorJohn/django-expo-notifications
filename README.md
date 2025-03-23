@@ -216,7 +216,6 @@ device.messages.send(title="Hello, World!")
 
 While creating and sending messages in one go is the recommended way, you can also create messages first and send them later:
 
-
 ```python
 from expo_notifications.models import Message
 
@@ -229,6 +228,27 @@ single_message.send()
 multiple_messages = Message.objects.all()
 multiple_messages.send()
 ```
+
+## Django Admin Actions
+
+The `expo_notifications` app comes with Django admin actions that can be used to send messages and check their receipts.
+Note that these actions are mainly meant for troubleshooting and manual testing.
+
+### Send Selected Messages
+
+The `Send selected messages` action can be used to troubleshoot your setup and test sending push notifications.
+The action will send the selected messages in bulk via a Celery task and schedule a task to check their receipts.
+
+To see whether the messages were sent successfully, you can check their tickets in the Django admin interface.
+Messages which were rejected by Expo will have their `is_success` flag set to `False` and their `error_message` field may contain a rejection reason.
+
+### Check Selected Tickets
+
+The `Check selected tickets` action can be used to manually check the receipts of selected messages without a delay.
+This action is solely meant for troubleshooting, since the app automatically schedules tasks to check the receipts of all sent messages.
+
+To see whether a message was successfully sent to a device, you can check its ticket receipts in the Django admin interface.
+Messages which could not be sent to a device will have their `is_success` flag set to `False` and their `error_message` field may contain a reason.
 
 ## Example Project
 

@@ -18,6 +18,17 @@
 A Django app that allows you to keep track of devices, send Expo push notifications, and check their tickets for receipts.
 This project makes use of [Celery](https://github.com/celery/celery) and the [Expo Server SDK for Python](https://github.com/expo-community/expo-server-sdk-python) for sending push messages and checking push receipts in the background.
 
+## Features
+
+- Keep track of user device tokens and preffered languages
+- Send push notifications efficiently in bulk
+- Automatically retry sending messages in case of a failure
+- Automatically keep track of message tickets
+- Automatically check push receipts
+- Automatically retry checking receipts in case of a failure
+- Automatically mark inactive devices
+- Django admin actions for sending messages and checking receipts
+
 ## Installation
 
 ```sh

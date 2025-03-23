@@ -15,12 +15,12 @@
 [license-image]: https://img.shields.io/pypi/l/django-expo-notifications
 [license-url]: https://github.com/DoctorJohn/django-expo-notifications/blob/main/LICENSE
 
-A Django app that allows you to keep track of devices, send Expo push notifications, and check their tickets for receipts.
-This project makes use of [Celery](https://github.com/celery/celery) and the [Expo Server SDK for Python](https://github.com/expo-community/expo-server-sdk-python) for sending push messages and checking push receipts in the background.
+A Django app that allows you to keep track of devices, send Expo push notifications and check their tickets for receipts.
+This project uses [Celery](https://github.com/celery/celery) and the [Expo Server SDK for Python](https://github.com/expo-community/expo-server-sdk-python) to send push messages and check push receipts in the background.
 
 ## Features
 
-- Keep track of user device tokens and preffered languages
+- Keep track of user device tokens and preferred languages
 - Send push notifications efficiently in bulk
 - Automatically retry sending messages in case of a failure
 - Automatically keep track of message tickets
@@ -62,7 +62,7 @@ This can be done by following Celery's [First steps with Django](https://docs.ce
 ## Settings
 
 You may optionally set the following settings in your Django project's settings module.
-The code snippet bellow shows the default values for each setting.
+The code snippet below shows the default values for each setting.
 
 ```python
 from datetime import timedelta
@@ -83,7 +83,7 @@ EXPO_NOTIFICATIONS_CHECKING_TASK_RETRY_DELAY = timedelta(minutes=1)
 
 ### Enhanced Security for Push Notifications
 
-At some point you most likely want to enable `Enhanced Security for Push Notifications` in your Expo account.
+At some point, you most likely want to enable `Enhanced Security for Push Notifications` in your Expo account.
 This will require you to provide an Expo access token in your Django project's settings module like this:
 
 ```python
@@ -94,7 +94,7 @@ Check out the [Expo documentation](https://docs.expo.dev/push-notifications/send
 
 ### Receipt Check Delay
 
-Expo recommends to check the receipts of push notifications after some delay.
+Expo recommends checking the receipts of push notifications after some delay.
 This gives Expo time to process the push notifications and generate receipts.
 The default delay is based on the value used in the official [Expo Server SDK for Node](https://github.com/expo/expo-server-sdk-node).
 Feel free to adjust this setting to your needs:
@@ -170,7 +170,7 @@ Device.objects.update_or_create(
 )
 ```
 
-We recommend using [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) and, if needed, [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.
+We recommend using [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) and if needed, [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.
 
 ### Sending push notifications
 
@@ -211,7 +211,7 @@ device.messages.send(title="Hello, World!")
 
 #### Manually resending messages
 
-This feature is mainly meant for debugging purposes, since Celery will automatically retry sending messages in case of a failure.
+This feature is mainly meant for debugging purposes since Celery will automatically retry sending messages in case of a failure.
 
 ```python
 from expo_notifications.models import Message

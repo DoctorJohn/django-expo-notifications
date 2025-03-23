@@ -20,14 +20,14 @@ This project uses [Celery](https://github.com/celery/celery) and the [Expo Serve
 
 ## Features
 
-- Keep track of user device tokens and preferred languages
-- Send push notifications efficiently in bulk
-- Automatically retry sending messages in case of a failure
-- Automatically keep track of message tickets
-- Automatically check push receipts
-- Automatically retry checking receipts in case of a failure
-- Automatically mark inactive devices
-- Django admin actions for sending messages and checking receipts
+- [x] Keep track of user device tokens and preferred languages
+- [x] Send push notifications efficiently in bulk
+- [x] Automatically retry sending messages in case of a failure
+- [x] Automatically keep track of message tickets
+- [x] Automatically check push receipts
+- [x] Automatically retry checking receipts in case of a failure
+- [x] Automatically flag inactive devices
+- [x] Django admin actions for sending messages and checking receipts
 
 ## Installation
 

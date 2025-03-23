@@ -212,19 +212,20 @@ device = Device.objects.filter(is_active=True).first()
 device.messages.send(title="Hello, World!")
 ```
 
-#### Manually resending messages
+#### Separately create and send messages
 
-This feature is mainly meant for debugging purposes since Celery will automatically retry sending messages in case of a failure.
+While creating and sending messages in one go is the recommended way, you can also create messages first and send them later:
+
 
 ```python
 from expo_notifications.models import Message
 
 
-# Resending a single message (i.e. a model instance)
+# Sending a single message (i.e. a model instance)
 single_message = Message.objects.first()
 single_message.send()
 
-# Resending multiple messages (i.e. a queryset)
+# Sending multiple messages (i.e. a queryset)
 multiple_messages = Message.objects.all()
 multiple_messages.send()
 ```

@@ -11,7 +11,9 @@ class MessageQueryset(models.QuerySet):
         from expo_notifications.tasks import send_messages
 
         message_pks = list(self.values_list("pk", flat=True))
-        send_messages.delay_on_commit(message_pks)
+
+        if message_pks:
+            send_messages.delay_on_commit(message_pks)
 
 
 class MessageManager(models.Manager):
@@ -36,6 +38,7 @@ class MessageManager(models.Manager):
         messages = self.bulk_create(*args, **kwargs)
         message_pks = [message.pk for message in messages]
 
-        send_messages.delay_on_commit(message_pks)
+        if message_pks:
+            send_messages.delay_on_commit(message_pks)
 
         return messages

@@ -269,7 +269,7 @@ def test_stores_push_ticket_receival_date(mock_publish_multiple, message1, now, 
 
 
 @pytest.mark.django_db
-def test_schedules_check_receipts_tasks_for_all_success_tickets(
+def test_schedules_check_receipts_task_for_all_success_tickets(
     mock_publish_multiple,
     mock_check_receipts_apply_async,
     settings,
@@ -313,6 +313,29 @@ def test_schedules_check_receipts_tasks_for_all_success_tickets(
         ticket1.pk,
         ticket3.pk,
     ]
+
+
+@pytest.mark.django_db
+def test_schedules_no_check_receipts_task_if_there_are_no_success_tickets(
+    mock_publish_multiple,
+    mock_check_receipts_apply_async,
+    message1,
+):
+    mock_publish_multiple.return_value = [
+        PushTicket(
+            push_message="test-push-message",
+            status=PushTicket.ERROR_STATUS,
+            message="test-message",
+            details=None,
+            id="test-ticket1-id",
+        ),
+    ]
+
+    send_messages([message1.pk])
+
+    ticket1 = message1.tickets.get()
+    assert not ticket1.is_success
+    assert not mock_check_receipts_apply_async.called
 
 
 @pytest.mark.django_db

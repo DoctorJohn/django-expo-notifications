@@ -60,7 +60,8 @@ def send_messages(self, message_pks: list[str]) -> None:
         ticket.pk for ticket in Ticket.objects.bulk_create(tickets) if ticket.is_success
     ]
 
-    check_receipts.apply_async(
-        kwargs={"ticket_pks": pks_of_success_tickets},
-        countdown=settings.receipt_check_delay.total_seconds(),
-    )
+    if pks_of_success_tickets:
+        check_receipts.apply_async(
+            kwargs={"ticket_pks": pks_of_success_tickets},
+            countdown=settings.receipt_check_delay.total_seconds(),
+        )

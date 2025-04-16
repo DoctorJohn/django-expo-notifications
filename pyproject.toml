@@ -38,23 +38,25 @@ repository = "https://github.com/DoctorJohn/django-expo-notifications"
 documentation = "https://github.com/DoctorJohn/django-expo-notifications"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
-packages = [{ include = "expo_notifications" }]
+[dependency-groups]
+dev = [
+    "beautifulsoup4>=4.13.4",
+    "factory-boy>=3.3.3",
+    "pre-commit>=4.2.0",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.1.1",
+    "pytest-django>=4.11.1",
+    "pytest-mock>=3.14.0",
+    "pytest-randomly>=3.16.0",
+    "redis>=5.2.1",
+    "ruff>=0.11.5",
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.11.0"
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-pytest-mock = "^3.14.0"
-pytest-django = "^4.10.0"
-pytest-randomly = "^3.16.0"
-factory-boy = "^3.3.3"
-pre-commit = "^4.2.0"
-redis = "^5.2.1"
-beautifulsoup4 = "^4.13.3"
+[tool.hatch.build.targets.wheel]
+packages = ["expo_notifications"]
 
 [tool.ruff.lint]
 extend-select = ["I"]

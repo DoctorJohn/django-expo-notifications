@@ -255,10 +255,10 @@ Messages which could not be sent to a device will have their `is_success` flag s
 Take a look at our Django example project under `tests/project`.
 It can be run by executing these commands:
 
-1. `poetry install`
-2. `poetry run tests/project/manage.py migrate`
-3. `poetry run tests/project/manage.py createsuperuser`
-4. `poetry run tests/project/manage.py runserver`
+1. `uv sync`
+2. `uv run tests/project/manage.py migrate`
+3. `uv run tests/project/manage.py createsuperuser`
+4. `uv run tests/project/manage.py runserver`
 
 ### Live testing
 
@@ -279,5 +279,5 @@ export EXPO_NOTIFICATIONS_TOKEN="your-expo-viewer-access-token-here"
 
 Now you can run a Celery worker and the Django dev server in parallel to test sending push notifications and checking their receipts:
 
-- `poetry run celery --workdir tests/project --app project worker -l INFO`
-- `poetry run tests/project/manage.py runserver`
+- `uv run celery --workdir tests/project --app project worker -l INFO`
+- `uv run tests/project/manage.py runserver`

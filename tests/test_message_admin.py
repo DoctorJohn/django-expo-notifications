@@ -4,7 +4,7 @@ from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.contrib.messages import get_messages
 from django.urls import reverse
 
-from tests.factories import MessageFactory, TicketFactory
+from .factories import MessageFactory, TicketFactory
 
 CHANGELIST_URL = reverse("admin:expo_notifications_message_changelist")
 

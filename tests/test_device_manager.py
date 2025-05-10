@@ -1,7 +1,8 @@
 import pytest
 
 from expo_notifications.models import Device
-from tests.factories import DeviceFactory
+
+from .factories import DeviceFactory
 
 
 @pytest.mark.django_db

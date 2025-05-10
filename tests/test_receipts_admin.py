@@ -2,7 +2,7 @@ import pytest
 from bs4 import BeautifulSoup
 from django.urls import reverse
 
-from tests.factories import ReceiptFactory
+from .factories import ReceiptFactory
 
 CHANGELIST_URL = reverse("admin:expo_notifications_receipt_changelist")
 

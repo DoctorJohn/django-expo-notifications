@@ -1,7 +1,7 @@
 import pytest
 from exponent_server_sdk import PushTicket
 
-from tests.factories import TicketFactory
+from .factories import TicketFactory
 
 
 @pytest.mark.django_db

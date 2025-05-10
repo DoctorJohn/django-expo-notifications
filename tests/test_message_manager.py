@@ -1,7 +1,8 @@
 import pytest
 
 from expo_notifications.models import Message
-from tests.factories import DeviceFactory, MessageFactory
+
+from .factories import DeviceFactory, MessageFactory
 
 
 @pytest.mark.django_db

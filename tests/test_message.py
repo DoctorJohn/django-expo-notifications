@@ -3,7 +3,8 @@ from datetime import timedelta
 import pytest
 
 from expo_notifications.models import Message
-from tests.factories import MessageFactory
+
+from .factories import MessageFactory
 
 
 @pytest.mark.django_db

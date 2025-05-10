@@ -1,6 +1,6 @@
 import pytest
 
-from tests.factories import ReceiptFactory
+from .factories import ReceiptFactory
 
 
 @pytest.mark.django_db

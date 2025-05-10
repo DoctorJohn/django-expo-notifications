@@ -56,11 +56,12 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["expo_notifications"]
+packages = ["src/expo_notifications"]
 
 [tool.ruff.lint]
 extend-select = ["I"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.project.project.settings"
-addopts = "--cov=expo_notifications --cov-report term-missing --cov-report html"
+addopts = "--cov=src/expo_notifications --cov-report term-missing --cov-report html"
+pythonpath = [".", "src"]

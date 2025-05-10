@@ -1,6 +1,6 @@
 import pytest
 
-from tests.factories import DeviceFactory
+from .factories import DeviceFactory
 
 
 @pytest.mark.django_db

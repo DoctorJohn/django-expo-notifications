@@ -1,7 +1,8 @@
 import pytest
 
 from expo_notifications.models import Ticket
-from tests.factories import TicketFactory
+
+from .factories import TicketFactory
 
 
 @pytest.mark.django_db

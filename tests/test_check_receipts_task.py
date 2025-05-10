@@ -8,7 +8,8 @@ from exponent_server_sdk import (
 from requests.exceptions import ConnectionError, HTTPError
 
 from expo_notifications.tasks import check_receipts
-from tests.factories import TicketFactory
+
+from .factories import TicketFactory
 
 
 @pytest.fixture

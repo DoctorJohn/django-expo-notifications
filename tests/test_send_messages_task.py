@@ -10,7 +10,8 @@ from exponent_server_sdk import (
 from requests.exceptions import ConnectionError, HTTPError
 
 from expo_notifications.tasks import send_messages
-from tests.factories import MessageFactory
+
+from .factories import MessageFactory
 
 
 @pytest.fixture

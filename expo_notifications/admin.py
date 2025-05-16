@@ -16,6 +16,7 @@ class DeviceAdmin(admin.ModelAdmin):
     ]
     list_filter = ["is_active", "lang", "date_registered"]
     search_fields = ["user__username", "push_token"]
+    autocomplete_fields = ["user"]
 
     def get_ordering(self, request):
         return ["-id"]
@@ -49,6 +50,7 @@ class MessageAdmin(admin.ModelAdmin):
         "mutable_content",
     ]
     search_fields = ["title", "body", "subtitle"]
+    autocomplete_fields = ["device"]
     actions = ["send_messages"]
 
     def get_ordering(self, request):
@@ -82,6 +84,7 @@ class MessageAdmin(admin.ModelAdmin):
 class ReceiptAdmin(admin.ModelAdmin):
     list_display = ["__str__", "is_success", "date_checked", "ticket_link"]
     list_filter = ["is_success", "date_checked"]
+    autocomplete_fields = ["ticket"]
 
     def get_ordering(self, request):
         return ["-id"]
@@ -103,6 +106,7 @@ class TicketAdmin(admin.ModelAdmin):
     ]
     list_filter = ["is_success", "date_received"]
     search_fields = ["external_id"]
+    autocomplete_fields = ["message"]
     actions = ["check_tickets"]
 
     def get_ordering(self, request):

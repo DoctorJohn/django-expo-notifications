@@ -13,6 +13,7 @@ dependencies = [
     "exponent-server-sdk (>=2.1.0,<3.0.0)",
 ]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Web Environment",
     "Framework :: Django",
     "Framework :: Django :: 4.2",

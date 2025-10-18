@@ -26,4 +26,4 @@ jobs:
       - name: Lint
         run: |
           uv run ruff check expo_notifications tests
-          uv run ruff format --check expo_notifications tests
+          uv run ruff format --diff expo_notifications tests

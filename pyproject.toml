@@ -42,10 +42,6 @@ homepage = "https://github.com/DoctorJohn/django-expo-notifications"
 repository = "https://github.com/DoctorJohn/django-expo-notifications"
 documentation = "https://github.com/DoctorJohn/django-expo-notifications"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [dependency-groups]
 dev = [
     "beautifulsoup4>=4.13.4",
@@ -60,8 +56,13 @@ dev = [
     "ruff>=0.11.5",
 ]
 
-[tool.hatch.build.targets.wheel]
-packages = ["expo_notifications"]
+[build-system]
+requires = ["uv_build>=0.9.24,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""
+module-name = "expo_notifications"
 
 [tool.ruff.lint]
 extend-select = ["I", "UP"]

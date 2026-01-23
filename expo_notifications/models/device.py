@@ -40,4 +40,4 @@ class Device(models.Model):
         )
 
     def __str__(self) -> str:
-        return f"Device #{self.pk} of {self.user.username}"
+        return f"Device #{self.pk} of {self.user}"

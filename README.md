@@ -187,8 +187,7 @@ from expo_notifications.models import Device, Message
 
 
 messages = [
-    Message(device=device, title="Hello, World!")
-    for device in Device.objects.active
+    Message(device=device, title="Hello, World!") for device in Device.objects.active
 ]
 
 Message.objects.bulk_send(messages)

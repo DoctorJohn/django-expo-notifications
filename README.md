@@ -3,6 +3,7 @@
 [![PyPI][pypi-image]][pypi-url]
 ![PyPI - Python Version][python-image]
 ![PyPI - Django Version][django-image]
+[![Downloads][downloads-image]][downloads-url]
 [![Codecov][codecov-image]][codecov-url]
 [![License][license-image]][license-url]
 
@@ -10,6 +11,8 @@
 [pypi-url]: https://pypi.org/project/django-expo-notifications/
 [python-image]: https://img.shields.io/pypi/pyversions/django-expo-notifications
 [django-image]: https://img.shields.io/pypi/djversions/django-expo-notifications
+[downloads-image]: https://img.shields.io/pypi/dm/django-expo-notifications
+[downloads-url]: https://pypistats.org/packages/django-expo-notifications
 [codecov-image]: https://codecov.io/gh/DoctorJohn/django-expo-notifications/branch/main/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/DoctorJohn/django-expo-notifications
 [license-image]: https://img.shields.io/pypi/l/django-expo-notifications
